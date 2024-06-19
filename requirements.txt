@@ -1,2 +1,3 @@
 stanza
 sentence_transformers
+matplotlib
