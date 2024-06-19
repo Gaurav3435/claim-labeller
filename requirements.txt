@@ -1,0 +1,4 @@
+stanza
+json
+sentence_transformers
+pandas
