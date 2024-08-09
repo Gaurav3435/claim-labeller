@@ -21,7 +21,7 @@ def load_model_cached():
     return load_model()
 
 @st.cache_resource
-def load_model_cached2():
+def load_model2_cached():
     return load_model2()
 
 @st.cache_data
