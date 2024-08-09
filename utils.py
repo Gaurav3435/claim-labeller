@@ -132,8 +132,7 @@ def predict_similarity(paper, model, model2, tokenizer):
     score2 = claim_prediction(text, tokenizer, model2)
     df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
     df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1'], cmap='Greys')
-    df = df.style.background_gradient(subset=['Approach 2'], cmap='Greys')
+    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
     st.dataframe(df, use_container_width=True)
 
     st.markdown('### Introduction:')
@@ -142,8 +141,7 @@ def predict_similarity(paper, model, model2, tokenizer):
     score2 = claim_prediction(text, tokenizer, model2)
     df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
     df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1'], cmap='Greys')
-    df = df.style.background_gradient(subset=['Approach 2'], cmap='Greys')
+    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
     st.dataframe(df, use_container_width=True)
 
     st.markdown('### Methods:')
@@ -152,8 +150,7 @@ def predict_similarity(paper, model, model2, tokenizer):
     score2 = claim_prediction(text, tokenizer, model2)
     df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
     df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1'], cmap='Greys')
-    df = df.style.background_gradient(subset=['Approach 2'], cmap='Greys')
+    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
     st.dataframe(df, use_container_width=True)
 
     st.markdown('### Results:')
@@ -162,8 +159,7 @@ def predict_similarity(paper, model, model2, tokenizer):
     score2 = claim_prediction(text, tokenizer, model2)
     df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
     df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1'], cmap='Greys')
-    df = df.style.background_gradient(subset=['Approach 2'], cmap='Greys')
+    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
     st.dataframe(df, use_container_width=True)
 
     st.markdown('### Discussion:')
@@ -172,8 +168,7 @@ def predict_similarity(paper, model, model2, tokenizer):
     score2 = claim_prediction(text, tokenizer, model2)
     df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
     df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1'], cmap='Greys')
-    df = df.style.background_gradient(subset=['Approach 2'], cmap='Greys')
+    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
     st.dataframe(df, use_container_width=True)
 
 
