@@ -20,6 +20,10 @@ def load_json_file(uploaded_file):
 def load_model_cached():
     return load_model()
 
+@st.cache_resource
+def load_model_cached2():
+    return load_model2()
+
 @st.cache_data
 def labelling_similarity_cached(data):
     return labelling_similarity(data)
@@ -51,9 +55,6 @@ tab0, tab1, tab2, tab3 = st.tabs(["Instruction", "Research Article", "Prediction
 with tab0:
     st.markdown("#### These are the instructions to label the claims in the research articles:")
 
-
-
-
 # Tab 1
 with tab1:
     if st.session_state.form_submitted:
@@ -61,12 +62,13 @@ with tab1:
 
 # Tab 2
 with tab2:
-    model = load_model_cached()
+    model = load_model_cached() 
+    tokenizer, model2  = load_model2_cached()  
     if st.session_state.form_submitted:
         st.title("Predicted claims in Research Article")
         run_prediction = st.checkbox("Run Prediction")
         if run_prediction:
-            predict_similarity(st.session_state.data, model)
+            predict_similarity(st.session_state.data, model, model2, tokenizer)
         else:
             st.write("Prediction is turned off. Toggle the checkbox to run predictions.")
 
