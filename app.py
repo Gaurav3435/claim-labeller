@@ -62,15 +62,70 @@ with tab1:
 
 # Tab 2
 with tab2:
+    #load model and tokenizers
     model = load_model_cached() 
     tokenizer, model2  = load_model2_cached()  
+    
+    #check if the paper is uploaded
     if st.session_state.form_submitted:
-        st.title("Predicted claims in Research Article")
-        run_prediction = st.checkbox("Run Prediction")
-        if run_prediction:
-            predict_similarity(st.session_state.data, model, model2, tokenizer)
-        else:
-            st.write("Prediction is turned off. Toggle the checkbox to run predictions.")
+
+        #create list of required sections from the paper
+        sections = ['abstractText','INTRO','METHODS','RESULTS','DISCUSS']
+
+        st.markdown('Approach 1: Confidence score between 0 to 100')
+        st.markdown('Approach 2: Claim: 1 and Non Claim 0')
+
+        #show title
+        title = st.session_state.data[0]['title'] 
+        st.markdown('### Title:')
+        st.markdown("#### {}".format(title))
+
+        # Create an empty DataFrame with the specified columns
+        df = pd.DataFrame({'Section':[],'Sentence': [],'Approach 1': [],'Approach 2':[]})
+
+        #iterate through abstract section in the paper
+        st.markdown('### {}:'.format(sections[0]))
+        df_sentences1 = predict_similarity(st.session_state.data, model, model2, tokenizer, sections[0])
+        df_sentences =  df_sentences1.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
+        st.dataframe(df_sentences, use_container_width=True)
+        df =  pd.concat([df, df_sentences1], ignore_index=True)
+        #iterate through INTRO section in the paper
+        st.markdown('### {}:'.format(sections[1]))
+        df_sentences1 = predict_similarity(st.session_state.data, model, model2, tokenizer, sections[1])
+        df_sentences =  df_sentences1.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
+        st.dataframe(df_sentences, use_container_width=True)
+        df =  pd.concat([df, df_sentences1], ignore_index=True)
+        #iterate through METHODS section in the paper
+        st.markdown('### {}:'.format(sections[2]))
+        df_sentences1 = predict_similarity(st.session_state.data, model, model2, tokenizer, sections[2])
+        df_sentences =  df_sentences1.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
+        st.dataframe(df_sentences, use_container_width=True)
+        df =  pd.concat([df, df_sentences1], ignore_index=True)
+        #iterate through RESULTS section in the paper
+        st.markdown('### {}:'.format(sections[3]))
+        df_sentences1 = predict_similarity(st.session_state.data, model, model2, tokenizer, sections[3])
+        df_sentences =  df_sentences1.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
+        st.dataframe(df_sentences, use_container_width=True)
+        df =  pd.concat([df, df_sentences1], ignore_index=True)
+        #iterate through DISCUSS section in the paper
+        st.markdown('### {}:'.format(sections[4]))
+        df_sentences1 = predict_similarity(st.session_state.data, model, model2, tokenizer, sections[4])
+        df_sentences =  df_sentences1.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
+        st.dataframe(df_sentences, use_container_width=True)
+        df =  pd.concat([df, df_sentences1], ignore_index=True)
+       
+        # Convert DataFrame to CSV
+        csv = df.to_csv(index=False)
+        # Create a download button
+        st.download_button(
+            label="Download CSV",
+            data=csv,
+            file_name='{}.csv'.format(str(uploaded_file.name).split('.')[0]),
+            mime='text/csv'
+        )
+
+    else:
+        st.write("Prediction is turned off. Toggle the checkbox to run predictions.")
 
 # Tab 3
 with tab3:

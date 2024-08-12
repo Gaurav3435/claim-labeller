@@ -25,7 +25,7 @@ def text_segment(text):
 
 @st.cache_resource
 def load_model():
-    model = SentenceTransformer('dmis-lab/biobert-base-cased-v1.2')
+    model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
     return model 
 
 @st.cache_resource
@@ -41,7 +41,7 @@ def similiarity_score(title, sentences, model):
     for i in range(len(sentences)):
         embedding_2 = model.encode(sentences[i], convert_to_tensor=True)
         s = util.pytorch_cos_sim(embedding_1, embedding_2),sentences[i]
-        scores.append(float(s[0][0]))
+        scores.append(round(float(s[0][0]),6)*100)
     return scores
 
 def claim_prediction(sentences, tokenizer, model):
@@ -54,7 +54,10 @@ def claim_prediction(sentences, tokenizer, model):
             outputs = model(**inputs)
         # Get predicted class
         predicted_class = torch.argmax(outputs.logits, dim=1).item()
-        scores.append(predicted_class)
+        if predicted_class:
+            scores.append(0)
+        else:
+            scores.append(1)
     return scores
 
 # Function to display the research paper
@@ -119,58 +122,15 @@ def display_research_paper(paper):
 
  
 # Function to display the research paper
-def predict_similarity(paper, model, model2, tokenizer):
+def predict_similarity(paper, model, model2, tokenizer, section):
     paper = paper[0]
-
-    title = paper['title'] 
-    st.markdown('### Title:')
-    st.markdown("#### {}".format(title))
-
-    st.markdown('### Abstract:')
-    text = text_segment(paper['abstractText'])
+    title =  paper['title']
+    text = text_segment(paper['{}'.format(section)])
     scores  = similiarity_score(title,  text, model)
     score2 = claim_prediction(text, tokenizer, model2)
-    df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
-    df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
-    st.dataframe(df, use_container_width=True)
-
-    st.markdown('### Introduction:')
-    text = text_segment(paper['INTRO'])
-    scores  = similiarity_score(title,  text, model)
-    score2 = claim_prediction(text, tokenizer, model2)
-    df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
-    df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
-    st.dataframe(df, use_container_width=True)
-
-    st.markdown('### Methods:')
-    text = text_segment(paper['METHODS'])
-    scores  = similiarity_score(title,  text, model)
-    score2 = claim_prediction(text, tokenizer, model2)
-    df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
-    df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
-    st.dataframe(df, use_container_width=True)
-
-    st.markdown('### Results:')
-    text = text_segment(paper['RESULTS'])
-    scores  = similiarity_score(title,  text, model)
-    score2 = claim_prediction(text, tokenizer, model2)
-    df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
-    df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
-    st.dataframe(df, use_container_width=True)
-
-    st.markdown('### Discussion:')
-    text = text_segment(paper['DISCUSS'])
-    scores  = similiarity_score(title,  text, model)
-    score2 = claim_prediction(text, tokenizer, model2)
-    df = {'Sentence': text,'Approach 1': scores,'Approach 2':score2}
-    df = pd.DataFrame(df)
-    df = df.style.background_gradient(subset=['Approach 1', 'Approach 2'], cmap='Greys')
-    st.dataframe(df, use_container_width=True)
-
+    df = {'Section':['{}'.format(section)]*len(scores),'Sentence': text,'Approach 1': scores,'Approach 2':score2}
+    df1 = pd.DataFrame(df)
+    return df1
 
 
 
