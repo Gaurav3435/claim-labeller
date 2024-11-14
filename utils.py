@@ -25,14 +25,14 @@ def text_segment(text):
 
 @st.cache_resource
 def load_model():
-    model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
+    model = SentenceTransformer( 'sentence-transformers/all-mpnet-base-v2')
     return model 
 
 @st.cache_resource
 def load_model2():
     # Load pre-trained BERT tokenizer and model
-    tokenizer = BertTokenizer.from_pretrained('saved_weights')
-    model = BertForSequenceClassification.from_pretrained('saved_weights', num_labels=2) 
+    tokenizer = BertTokenizer.from_pretrained( 'saved_weights', token='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')
+    model = BertForSequenceClassification.from_pretrained('saved_weights', num_labels=2 ,  token='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' ) 
     return (tokenizer, model)
 
 def similiarity_score(title, sentences, model):
