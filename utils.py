@@ -31,8 +31,12 @@ def load_model():
 @st.cache_resource
 def load_model2():
     # Load pre-trained BERT tokenizer and model
-    tokenizer = BertTokenizer.from_pretrained( 'saved_weights', token='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')
-    model = BertForSequenceClassification.from_pretrained('saved_weights', num_labels=2 ,  token='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' ) 
+    '''
+    tokenizer = BertTokenizer.from_pretrained('saved_weights')
+    model = BertForSequenceClassification.from_pretrained('saved_weights', num_labels=2) 
+    '''
+    tokenizer = BertTokenizer.from_pretrained('google-bert/bert-base-uncased')
+    model = BertForSequenceClassification.from_pretrained('google-bert/bert-base-uncased', num_labels=2)  
     return (tokenizer, model)
 
 def similiarity_score(title, sentences, model):
